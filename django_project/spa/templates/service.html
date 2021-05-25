@@ -3,7 +3,7 @@
 {% for service in services %}
 {{ service.name }}
 {{ service.price }}
-{{ service.master.full_name }}
+<a href="{% url 'master_detail' service.master.id %}"> {{ service.master }} </a>
 
 {% endfor %}
 <!--aa-->
