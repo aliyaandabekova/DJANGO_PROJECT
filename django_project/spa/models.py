@@ -17,6 +17,8 @@ class Master(models.Model):
     exp = models.IntegerField(default=0)
     birth_date = models.DateField()
 
+    # aaa
+
 
 
 
