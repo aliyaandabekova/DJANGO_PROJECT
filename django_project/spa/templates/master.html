@@ -1,0 +1,8 @@
+
+{% for master in masters %}
+<img src = '{{ master.photo.url }}'>
+{{ master.full_name }}
+{{ master.exp }}
+{{ master.birth_date }}
+
+{% endfor %}
