@@ -5,4 +5,4 @@ class OrderForm(ModelForm):
 
     class Meta:
         model = Order
-        fields = ['user','service']
+        fields = ['user','service','payment_method']
