@@ -5,9 +5,9 @@ from spa.models import Service
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    photo = models.ImageField()
+    photo = models.ImageField(default='олень.jpg')
     name = models.CharField(max_length=40)
-    age = models.IntegerField
+    age = models.IntegerField()
     email = models.EmailField(max_length=30,unique=True)
     wallet = models.PositiveIntegerField(default=0)
     order_count = models.PositiveIntegerField(default=0)
@@ -20,4 +20,8 @@ class Order(models.Model):
         ('in_process','in_process'),
         ('closed','closed'),
     ),max_length=15,default='in_process')
+    payment_method = models.CharField(choices=(
+        ('cash','cash'),
+        ('wallet','wallet'),
+    ), default='cash', max_length=10)
 
