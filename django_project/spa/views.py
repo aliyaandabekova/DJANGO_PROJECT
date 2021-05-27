@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Service,Master
+from .forms import RegisterForm
+from .services import profileCreate
 
 # Create your views here.
 def homepage(request):
@@ -17,11 +19,12 @@ def masters(request):
     return render(request, 'master.html',{'masters':masters})
 
 def register_page(request):
-    form = UserCreationForm()
+    form = RegisterForm()
     if request.method =='POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
+            profileCreate(form.cleaned_data,form.instance)
     return render(request,'register.html',{'form':form})
 
 def login_page(request):
