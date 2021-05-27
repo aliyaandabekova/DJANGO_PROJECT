@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Profile,Order
 from .forms import OrderForm
+from .services import incrementOrdetCount, countMoney
 
 def profile_page(request):
     print(request.user)
@@ -17,5 +18,7 @@ def order_page(request):
     if request.method == "POST":
         form =OrderForm(request.POST, initial={'user':user})
         if form.is_valid():
+            incrementOrdetCount(user.profile)
+            countMoney(user.profile, form.instance)
             form.save()
     return render(request, 'order.html', {'form':form})
