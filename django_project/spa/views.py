@@ -39,6 +39,10 @@ def login_page(request):
 def master_detail(request,master_id):
     try:
         master = Master.objects.get(id=master_id)
+        services = master.services.all()
+        certificates = master.certificates_set.all()
     except Master.DoesNotExist:
         return HttpResponse('404')
-    return render(request,'master_detail.html',{'master':master})
+    return render(request,'master_detail.html',{'master':master,
+                                                'services':services,
+                                                'certificates':certificates,})
