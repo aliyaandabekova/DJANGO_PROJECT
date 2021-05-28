@@ -6,8 +6,7 @@ from django.db import models
 class Service(models.Model):
     name = models.CharField(max_length=40, unique=True)
     price = models.IntegerField()
-    master = models.ForeignKey("Master", on_delete=models.SET_NULL,null=True)
-
+    master = models.ForeignKey("Master", on_delete=models.SET_NULL,null=True,related_name='services') # null
     def __str__(self):
         return self.name
 
@@ -17,7 +16,19 @@ class Master(models.Model):
     exp = models.IntegerField(default=0)
     birth_date = models.DateField()
 
-    # aaa
+class Certificates(models.Model):
+    name = models.CharField(max_length=40)
+    date_graduate = models.DateField()
+    date_expired = models.DateField()
+    school = models.CharField(max_length=40)
+    photo = models.ImageField()
+    status = models.CharField(max_length=10,choices=(
+        ('active','active'),
+        ('dead','dead'),
+    ),default='active')
+    master = models.ForeignKey(Master,on_delete=models.CASCADE)
+
+
 
 
 
