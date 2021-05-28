@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .models import Profile,Order
 from .forms import OrderForm
 from .services import incrementOrdetCount, countMoney
+from spa.models import Service
 
 def profile_page(request):
     print(request.user)
@@ -12,11 +13,12 @@ def profile_page(request):
         return HttpResponse('404')
     return render(request,'profile.html',{'profile':profile})
 
-def order_page(request):
+def order_page(request, service_id):
+    service = Service.objects.get(id=service_id)
     user = request.user
-    form = OrderForm(initial={'user':user})
+    form = OrderForm(initial={'user':user,'service':service})
     if request.method == "POST":
-        form =OrderForm(request.POST, initial={'user':user})
+        form = OrderForm(request.POST, initial={'user':user,'service':service})
         if form.is_valid():
             incrementOrdetCount(user.profile)
             countMoney(user.profile, form.instance)
