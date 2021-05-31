@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Service,Master
 from .forms import RegisterForm
-from .services import profileCreate
+from .services import profileCreate,checkExpiredCertificate
 
 # Create your views here.
 def homepage(request):
@@ -40,7 +40,9 @@ def master_detail(request,master_id):
     try:
         master = Master.objects.get(id=master_id)
         services = master.services.all()
-        certificates = master.certificates_set.all()
+        certificates = master.certificates_set.filter(status='active')
+        checkExpiredCertificate(certificates)
+
     except Master.DoesNotExist:
         return HttpResponse('404')
     return render(request,'master_detail.html',{'master':master,
