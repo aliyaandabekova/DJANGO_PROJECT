@@ -24,3 +24,19 @@ def order_page(request, service_id):
             countMoney(user.profile, form.instance)
             form.save()
     return render(request, 'order.html', {'form':form})
+
+
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user)
+    return render(request,'my_orders.html',{'orders':orders})
+
+
+def delete_order(request,order_id):
+    try:
+        order = Order.objects.get(user=request.user,id=order_id)
+    except Order.DoesNotExist:
+        #TODO
+        return HttpResponse('?')
+    if request.method == 'POST':
+        order.delete()
+    return render(request,'delete_order.html')
