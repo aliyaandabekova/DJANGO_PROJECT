@@ -8,7 +8,7 @@ from .services import profileCreate,checkExpiredCertificate
 
 # Create your views here.
 def homepage(request):
-    return HttpResponse(f'Welcome to our site, {request.user}')
+    return render(request,'index.html')
 
 def services(request):
     services = Service.objects.all()
