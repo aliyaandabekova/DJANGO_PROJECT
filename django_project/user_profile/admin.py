@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user','service','date_created','status_char','payment_method']
+    list_display = ['user','service','date_created','status','payment_method']
 admin.site.register(Order,OrderAdmin)
 
 class ProfileAdmin(admin.ModelAdmin):
