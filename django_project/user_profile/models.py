@@ -16,7 +16,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(Service, on_delete=models.SET_NULL,null=True)
     date_created =models.DateTimeField(auto_now_add=True)
-    status_char = models.CharField(choices=(
+    status = models.CharField(choices=(
         ('in_process','in_process'),
         ('closed','closed'),
     ),max_length=15,default='in_process')
