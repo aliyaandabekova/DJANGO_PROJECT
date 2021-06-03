@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Profile,Order
@@ -25,11 +26,14 @@ def order_page(request, service_id):
             incrementOrdetCount(user.profile)
             countMoney(user.profile, form.instance)
             form.save()
-    return render(request, 'order.html', {'form':form})
+    return render(request, 'order.html', {'form':form, 'service':service})
 
 
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user)
+    user = request.user
+    if isinstance(user, AnonymousUser):
+        return HttpResponse('Login please!')
+    orders = Order.objects.filter(user=user)
     return render(request,'my_orders.html',{'orders':orders})
 
 
