@@ -2,8 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Profile,Order
 from .forms import OrderForm
-from .services import incrementOrdetCount, countMoney
+from .services import incrementOrdetCount, countMoney, time_check
 from spa.models import Service
+import datetime
+from django.utils import timezone
 
 def profile_page(request):
     print(request.user)
@@ -35,8 +37,29 @@ def delete_order(request,order_id):
     try:
         order = Order.objects.get(user=request.user,id=order_id)
     except Order.DoesNotExist:
-        #TODO
         return HttpResponse('?')
+
     if request.method == 'POST':
-        order.delete()
+        order_date = order.date_created
+        if time_check(order_date):
+            order.delete()
+        else:
+            return HttpResponse('Time is Up!')
     return render(request,'delete_order.html')
+
+
+def update_order(request,order_id):
+    try:
+        order =Order.objects.get(user=request.user,id=order_id)
+    except Order.DoesNotExist:
+        return HttpResponse('?')
+
+    form = OrderForm(instance=order)
+    if request.method == 'POST':
+        form =OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            if time_check(order.date_created):
+                form.save()
+            else:
+                return HttpResponse('Time is Up!')
+    return render(request, 'order.html',{'form':form})
