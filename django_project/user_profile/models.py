@@ -11,6 +11,8 @@ class Profile(models.Model):
     email = models.EmailField(max_length=30,unique=True)
     wallet = models.PositiveIntegerField(default=0)
     order_count = models.PositiveIntegerField(default=0)
+    sale_amount = models.FloatField(default=0)
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
