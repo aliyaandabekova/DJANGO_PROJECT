@@ -2,19 +2,24 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Profile,Order
-from .forms import OrderForm
-from .services import incrementOrdetCount, countMoney, time_check
+from .forms import OrderForm,ProfileForm
+from .services import *
 from spa.models import Service
 import datetime
 from django.utils import timezone
 
 def profile_page(request):
-    print(request.user)
     try:
         profile = Profile.objects.get(user=request.user)
+        count_sale(profile)
     except (Profile.DoesNotExist,TypeError):
         return HttpResponse('404')
-    return render(request,'profile.html',{'profile':profile})
+    form = ProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+    return render(request,'profile.html',{'profile':profile,'form':form})
 
 def order_page(request, service_id):
     service = Service.objects.get(id=service_id)
