@@ -1,1 +1,9 @@
-{{ profile }}
+{{ profile.wallet }}
+{{ profile.order_count }}
+{{ profile.sale_amount }}
+<img src='{{profile.photo.url}}' height=50 width=50>
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit">
+</form>
