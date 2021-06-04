@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,6 +9,10 @@ from .services import profileCreate,checkExpiredCertificate
 # Create your views here.
 def homepage(request):
     return render(request,'index.html')
+
+def logout_page(request):
+    logout(request)
+    return redirect('home')
 
 def services(request):
     services = Service.objects.all()
